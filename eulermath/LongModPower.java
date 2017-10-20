@@ -31,13 +31,13 @@ public class LongModPower {
                 if (modv > 0) {
                     product %= modv;
                 }
-	        }
+	    }
             if (nexponent == 0) {
                 return product;
             }
             count /= 2L;
             i--;
-	    }
+	}
         return product;
     }
 }
