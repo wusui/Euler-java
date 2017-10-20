@@ -166,10 +166,10 @@ public class Sieve {
 	    eulermath.Sieve sv = new eulermath.Sieve(100000000);
 	    int x = -1;
 	    while (x != 0) {
-	    	int prev = x;
-	    	x = sv.get_next();
-	    	if (x == prev) System.out.println(x);
-	    	if (x == 9000011) System.out.println(x);
-	    }
-	}
+            int prev = x;
+            x = sv.get_next();
+            if (x == prev) System.out.println(x);
+            if (x == 9000011) System.out.println(x);
+        }
+    }
 }
