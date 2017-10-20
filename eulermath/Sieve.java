@@ -112,53 +112,51 @@ public class Sieve {
         return row * 30 + col;
     }
     public void get_next_block() {
-		while (obuf_ind < 10) {
-			if (tbl_indx >= tblsize) {
-				break;
-			}
-			while (table[tbl_indx]) {
-				tbl_indx++;
-				if (tbl_indx >= tblsize) {
-					out_buffer[obuf_ind] = 0;
-					nb_index = 0;
-					return;
-				}
-			}
-			out_buffer[obuf_ind] = unconv(tbl_indx) + start_pt;
-			tbl_indx++;
-			obuf_ind++;
-			if (tbl_indx >= tblsize) {
-				if (obuf_ind < 10) {
-				    out_buffer[obuf_ind] = 0;
-				    nb_index = 0;
-				    return;
-				}
-			}
-		}
-		obuf_ind = 0;
-		nb_index = 0;
-		return;
-	}
-	
-	public int get_next() {
-		if (nb_index >= 10) {
-			get_next_block();
-		}
-		int retv = out_buffer[nb_index];
-		nb_index++;
-		if (retv > maxprime) {
-			return 0;
-		}
-		if (retv == 0) {
-		    start_pt += sievesz;
-		    if (start_pt < maxprime) {
-		    	do_later_sieve();
-		    	get_next_block();
-		    	//for (int ii=0; ii < 10; ii++) System.out.println(out_buffer[ii]);
-		    	retv = out_buffer[nb_index];
-		    	nb_index++;
-		    }
-		}
-		return retv;
-	}
+        while (obuf_ind < 10) {
+            if (tbl_indx >= tblsize) {
+                break;
+            }
+            while (table[tbl_indx]) {
+                tbl_indx++;
+                if (tbl_indx >= tblsize) {
+                    out_buffer[obuf_ind] = 0;
+                    nb_index = 0;
+                    return;
+                }
+            }
+            out_buffer[obuf_ind] = unconv(tbl_indx) + start_pt;
+            tbl_indx++;
+            obuf_ind++;
+            if (tbl_indx >= tblsize) {
+                if (obuf_ind < 10) {
+                    out_buffer[obuf_ind] = 0;
+                    nb_index = 0;
+                    return;
+                }
+            }
+        }
+        obuf_ind = 0;
+        nb_index = 0;
+        return;
+    }
+    public int get_next() {
+        if (nb_index >= 10) {
+            get_next_block();
+        }
+        int retv = out_buffer[nb_index];
+        nb_index++;
+        if (retv > maxprime) {
+            return 0;
+        }
+        if (retv == 0) {
+            start_pt += sievesz;
+            if (start_pt < maxprime) {
+                do_later_sieve();
+                get_next_block();
+                retv = out_buffer[nb_index];
+                nb_index++;
+            }
+        }
+        return retv;
+    }
 }
