@@ -6,14 +6,14 @@ import infrastruct.EulerProb;
 import eulermath.LongModPower; 
 
 public class Problem491 implements EulerProb {
+    private LongModPower longmodobj = new LongModPower();
     public String problem() {
-        LongModPower longmodobj = new LongModPower();
         long tenfact = 1L;
         for (int i=2; i<=10; i++) {
             tenfact *= i;
         }
         long answer = 0L;
-        for (int i=0; i<longmodobj.raise(3L,10L,0L); i++) {
+        for (int i=0; i<longmodobj.raise(3L, 10L, 0); i++) {
             int isum = 0;
             int idv = i;
             int [] vals = new int[10];
@@ -32,7 +32,7 @@ public class Problem491 implements EulerProb {
                     }
                 }
                 if (tot % 11 == 1) {
-                    long combs = tenfact / longmodobj.raise(2L, twocnt, 0L);
+                    long combs = tenfact / longmodobj.raise(2L, twocnt, 0);
                     answer += combs * combs;
                 }
             }
@@ -45,3 +45,4 @@ public class Problem491 implements EulerProb {
         Etimer.run_function(new Problem491());
     }
 }
+

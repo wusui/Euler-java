@@ -5,7 +5,7 @@ public class LongModPower {
     public LongModPower() {
         squares = new long[64];
     }
-    public long raise(long numb, long exponent, long modv) {
+    public long raise(long numb, long exponent, int modv) {
         squares[0] = 1;
         squares[1] = numb;
         int i = 0;

@@ -1,4 +1,4 @@
- package problem;
+package problem;
 
 import infrastruct.Etimer;
 import infrastruct.EulerProb;
@@ -7,11 +7,11 @@ import eulermath.Sieve;
 import eulermath.LongModPower; 
 
 public class Problem429 implements EulerProb {
+    private LongModPower longmodobj = new LongModPower();
     private String prob429(int psize) {
-        LongModPower longmodobj = new LongModPower();
         Sieve sv = new Sieve(psize);
         long numb = (long) psize;
-        long modv = 1000000009L;
+        int modv = (int) longmodobj.raise(10L,   9L,  0) + 9;
         long answer = 1;
         long pval = (long) sv.get_next();
         while (pval != 0L) {
@@ -29,9 +29,9 @@ public class Problem429 implements EulerProb {
         return Long.toString(answer);
     }
     public String problem() {
-        return prob429(100000000);
+        return prob429((int)longmodobj.raise(10L, 8L, 0));
     }
     public static void main(String[] args) {
-    	Etimer.run_function(new Problem429());
+        Etimer.run_function(new Problem429());
     }
 }
