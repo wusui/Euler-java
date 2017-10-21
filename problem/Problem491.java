@@ -13,7 +13,7 @@ public class Problem491 implements EulerProb {
             tenfact *= i;
         }
         long answer = 0L;
-        for (int i=0; i<longmodobj.raise(3L, 10L, 0); i++) {
+        for (int i=0; i<longmodobj.raise(3L, 10L); i++) {
             int isum = 0;
             int idv = i;
             int [] vals = new int[10];
@@ -32,7 +32,7 @@ public class Problem491 implements EulerProb {
                     }
                 }
                 if (tot % 11 == 1) {
-                    long combs = tenfact / longmodobj.raise(2L, twocnt, 0);
+                    long combs = tenfact / longmodobj.raise(2L, twocnt);
                     answer += combs * combs;
                 }
             }
@@ -45,4 +45,3 @@ public class Problem491 implements EulerProb {
         Etimer.run_function(new Problem491());
     }
 }
-

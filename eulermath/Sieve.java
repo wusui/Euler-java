@@ -6,7 +6,7 @@ public class Sieve {
     private final static int[] pindex = new int[]
             {1, 7, 11, 13, 17, 19, 23, 29};
     private final LongModPower longmodobj = new LongModPower();
-    private final int sievesz = (int)(longmodobj.raise(10L, 6L, 0) * 9L);
+    private final int sievesz = (int)(longmodobj.raise(10L, 6L) * 9L);
     private final int tblsize = (sievesz/30) * 8;
     private boolean table[];
     private int divlist[];
@@ -18,7 +18,7 @@ public class Sieve {
     private int nb_index;
     private int maxprime;
     public Sieve(int size) {
-        divlist = new int[(size > longmodobj.raise(10L, 8L, 0))
+        divlist = new int[(size > longmodobj.raise(10L, 8L))
                 ? 10000 : 2000];
         table = new boolean[tblsize];
         table[0] = true;
