@@ -9,5 +9,7 @@ package infrastruct;
  * @version 1.0
  */
 public interface EulerProb {
+    public String getError();
+    public void setError(String error);
     public String problem();
 }

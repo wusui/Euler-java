@@ -5,6 +5,8 @@ import java.io.File;
 import infrastruct.EulerProb;
 import infrastruct.Etimer;
 
+import problem.Problem0;
+
 /**
  * Run all the problem solutions in the problem directory.
  *
@@ -12,6 +14,7 @@ import infrastruct.Etimer;
  *
  */
 public class TestAll {
+    private EulerProb classv;
     /**
      * Given a problem name, get the object that implements it.
      *
@@ -20,26 +23,37 @@ public class TestAll {
      */
     private EulerProb getProblem(String probName) {
         try {
-            EulerProb classv = (EulerProb) Class.forName(
+            classv = (EulerProb) Class.forName(
                     probName).newInstance();
             return classv;
         }
         catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            setMsg(e.toString());
+
         }
         catch (IllegalAccessException e) {
-            e.printStackTrace();
+            setMsg(e.toString());
         }
         catch (InstantiationException e) {
-            e.printStackTrace();
+            setMsg(e.toString());
         }
-        return null;
+        return classv;
+    }
+    /**
+     * Set error message in new EulerProb object.
+     *
+     * @param error Error message
+     * @return EulerProb with error message set
+     */
+    private void setMsg(String error) {
+        classv = new Problem0();
+        classv.setError(error);
     }
     /**
      * Look through the problem directory and find all java
      * sources that solve a problem. Run those problems.
      */
-    private static void findAllProbs() {
+    public static void findAllProbs() {
         File problem_root = new File("src/problem");
         File probs[] = problem_root.listFiles();
         TestAll tester = new TestAll();
@@ -48,6 +62,9 @@ public class TestAll {
             int slashloc = abspathname.lastIndexOf(File.separator);
             String probfile = abspathname.substring(slashloc+1);
             if (probfile.endsWith(".java")) {
+                if (probfile.startsWith("Problem0.")) {
+                    continue;
+                }
                 if (probfile.startsWith("Problem")) {
                     int dotloc = probfile.lastIndexOf(".java");
                     String probName = probfile.substring(0,dotloc);

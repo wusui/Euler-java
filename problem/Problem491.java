@@ -12,7 +12,7 @@ import eulermath.LongModPower;
  * @see <a href="https://projecteuler.net/problem=491/">Problem 491</a>
  *
  */
-public class Problem491 implements EulerProb {
+public class Problem491 extends Problem0 implements EulerProb {
     private LongModPower longmodobj = new LongModPower();
     /**
      * It turns out that if the sum of odd digits in a pandigital number

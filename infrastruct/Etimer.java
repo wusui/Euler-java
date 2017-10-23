@@ -27,7 +27,9 @@ public class Etimer {
      */
     public static void do_function(EulerProb prob) {
         long timev = System.nanoTime();
-        answer = prob.problem();
+        if (prob != null) {
+            answer = prob.problem();
+        }
         exectime = System.nanoTime() - timev;
     }
 
@@ -41,7 +43,6 @@ public class Etimer {
         System.out.println("Answer: "+answer);
         System.out.println("Time:   "+time_format());
     }
-
     /**
      * Get a String value for the elapsed time.
      * <p>

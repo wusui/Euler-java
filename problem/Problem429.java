@@ -13,7 +13,7 @@ import eulermath.LongModPower;
  * @see <a href="https://projecteuler.net/problem=429/">Problem 429</a>
  *
  */
-public class Problem429 implements EulerProb {
+public class Problem429 extends Problem0 implements EulerProb {
     private LongModPower longmodobj = new LongModPower();
     /**
      * The sum of the squares of unitary divisors for n! is the product of
