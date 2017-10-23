@@ -54,7 +54,18 @@ public class TestAll {
      * sources that solve a problem. Run those problems.
      */
     public static void findAllProbs() {
-        File problem_root = new File("src/problem");
+        File localFile = new File(".");
+        File lfiles[] = localFile.listFiles();
+        boolean inlocaldir = false;
+        for (int i=0; i<lfiles.length; i++) {
+            if (lfiles[i].toString().endsWith("problem")) {
+                System.out.println(lfiles[i].toString());
+                inlocaldir = true;
+                break;
+            }
+        }
+        String root_dir = inlocaldir ? "problem" : "src/problem";
+        File problem_root = new File(root_dir);
         File probs[] = problem_root.listFiles();
         TestAll tester = new TestAll();
         for (int i=0; i<probs.length; i++) {
