@@ -15,7 +15,7 @@ import eulermath.LongModPower;
 public class Problem491 implements EulerProb {
     private LongModPower longmodobj = new LongModPower();
     /**
-     * It turns out that if the number of odd digits in a pandigital number
+     * It turns out that if the sum of odd digits in a pandigital number
      * are congruent to 1 (mod 11), then the number is divisible by 11.
      * The biggest loop in this function loops through all possible layouts
      * for the odd/even positions for each digit (for each digit, there are

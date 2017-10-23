@@ -4,8 +4,7 @@
  * Implements the measurement and display of elapsed time for an individual
  * project.
  * <p>   
- * Provides a reflective way of executing all modules in the problem package.
- * (Not yet implemented)
+ * Provides a way of testing all modules in the problem package.
  * <p>
  * @author Warren Usui
  * @version 1.0
