@@ -134,7 +134,13 @@ public class TestAll {
                             System.out.println("Math error in problem "+indx);
                         }
                     }
-                    compdata.put(indx, Etimer.answer);
+                    if (Etimer.answer != null) {
+                        compdata.put(indx, Etimer.answer);
+                    }
+                    else {
+                        System.out.println("Problem "+indx+
+                                " does not appear to be built.");
+                    }
                 }
             }
         }
