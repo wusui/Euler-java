@@ -1,7 +1,13 @@
 package infrastruct;
 
-import java.io.File;
+import java.util.Hashtable;
+import java.util.Set;
 
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import eulermath.LongModPower;
 import infrastruct.EulerProb;
 import infrastruct.Etimer;
 
@@ -29,7 +35,6 @@ public class TestAll {
         }
         catch (ClassNotFoundException e) {
             setMsg(e.toString());
-
         }
         catch (IllegalAccessException e) {
             setMsg(e.toString());
@@ -52,8 +57,19 @@ public class TestAll {
     /**
      * Look through the problem directory and find all java
      * sources that solve a problem. Run those problems.
+     *
+     * This handles both the case where the call is made from the parent of
+     * the src directory (which happens with the Eclipse classes in bin,
+     * and with the javac compiled classes that were  compiled from within
+     * the src directory.
+     *
+     * checker.txt is a text file whose lines consist of colon separated
+     * problem numbers and solutions.  The problem solutions generated
+     * are checked against this file.
      */
     public static void findAllProbs() {
+        LongModPower lmp = new LongModPower();
+        long timeLimit = lmp.raise(10L,9L) * 60L;
         File localFile = new File(".");
         File lfiles[] = localFile.listFiles();
         boolean inlocaldir = false;
@@ -64,10 +80,27 @@ public class TestAll {
                 break;
             }
         }
-        String root_dir = inlocaldir ? "problem" : "src/problem";
+        String header = inlocaldir ? "" : "src/";
+        String root_dir = String.format("%s%s", header, "problem");
+        String filename = String.format("%s%s", header,
+                "infrastruct/checker.txt");
         File problem_root = new File(root_dir);
         File probs[] = problem_root.listFiles();
         TestAll tester = new TestAll();
+        Hashtable<String,String> indata = new Hashtable<String,String>();
+        Hashtable<String,String> compdata = new Hashtable<String,String>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(":");
+                indata.put(parts[0], parts[1]);
+            }
+            br.close();
+        }
+        catch (Exception e) {
+            System.out.println("Unable to read checker.txt");
+        }
         for (int i=0; i<probs.length; i++) {
             String abspathname = probs[i].getAbsolutePath();
             int slashloc = abspathname.lastIndexOf(File.separator);
@@ -80,9 +113,36 @@ public class TestAll {
                     int dotloc = probfile.lastIndexOf(".java");
                     String probName = probfile.substring(0,dotloc);
                     String thisprob = String.format("problem.%s", probName);
+                    int eoachars = thisprob.lastIndexOf("m") + 1;
+                    String indx = thisprob.substring(eoachars);
+                    System.out.println("checking problem "+indx);
                     EulerProb problem = tester.getProblem(thisprob);
-                    Etimer.run_function(problem);
+                    Etimer.do_function(problem);
+                    String emsg = problem.getError();
+                    if (emsg != null) {
+                        System.out.println(emsg+" in "+indx);
+                    }
+                    if (Etimer.exectime > timeLimit) {
+                        System.out.println(indx+" took too long to execute");
+                    }
+                    String svdans = indata.get(indx);
+                    if (svdans == null) {
+                        System.out.println("checker.txt does not test "+indx);
+                    }
+                    else {
+                        if (! svdans.equals(Etimer.answer)) {
+                            System.out.println("Math error in problem "+indx);
+                        }
+                    }
+                    compdata.put(indx, Etimer.answer);
                 }
+            }
+        }
+        Set<String> keys = indata.keySet();
+        for(String key: keys){
+            String kval = compdata.get(key);
+            if (kval == null) {
+                System.out.println("Bad problem number in checker.txt: "+key);
             }
         }
     }
