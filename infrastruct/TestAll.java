@@ -6,6 +6,7 @@ import java.util.Set;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.PrintStream;
 
 import eulermath.LongModPower;
 import infrastruct.EulerProb;
@@ -66,8 +67,10 @@ public class TestAll {
      * checker.txt is a text file whose lines consist of colon separated
      * problem numbers and solutions.  The problem solutions generated
      * are checked against this file.
+     *
+     * @param ps PrintStream to use.
      */
-    public static void findAllProbs() {
+    public static void findAllProbs(PrintStream ps) {
         LongModPower lmp = new LongModPower();
         long timeLimit = lmp.raise(10L,9L) * 60L;
         File localFile = new File(".");
@@ -75,7 +78,7 @@ public class TestAll {
         boolean inlocaldir = false;
         for (int i=0; i<lfiles.length; i++) {
             if (lfiles[i].toString().endsWith("problem")) {
-                System.out.println(lfiles[i].toString());
+                ps.println(lfiles[i].toString());
                 inlocaldir = true;
                 break;
             }
@@ -99,7 +102,7 @@ public class TestAll {
             br.close();
         }
         catch (Exception e) {
-            System.out.println("Unable to read checker.txt");
+            ps.println("Unable to read checker.txt");
         }
         for (int i=0; i<probs.length; i++) {
             String abspathname = probs[i].getAbsolutePath();
@@ -115,30 +118,30 @@ public class TestAll {
                     String thisprob = String.format("problem.%s", probName);
                     int eoachars = thisprob.lastIndexOf("m") + 1;
                     String indx = thisprob.substring(eoachars);
-                    System.out.println("checking problem "+indx);
+                    ps.println("checking problem "+indx);
                     EulerProb problem = tester.getProblem(thisprob);
                     Etimer.do_function(problem);
                     String emsg = problem.getError();
                     if (emsg != null) {
-                        System.out.println(emsg+" in "+indx);
+                        ps.println(emsg+" in "+indx);
                     }
                     if (Etimer.exectime > timeLimit) {
-                        System.out.println(indx+" took too long to execute");
+                        ps.println(indx+" took too long to execute");
                     }
                     String svdans = indata.get(indx);
                     if (svdans == null) {
-                        System.out.println("checker.txt does not test "+indx);
+                        ps.println("checker.txt does not test "+indx);
                     }
                     else {
                         if (! svdans.equals(Etimer.answer)) {
-                            System.out.println("Math error in problem "+indx);
+                            ps.println("Math error in problem "+indx);
                         }
                     }
                     if (Etimer.answer != null) {
                         compdata.put(indx, Etimer.answer);
                     }
                     else {
-                        System.out.println("Problem "+indx+
+                        ps.println("Problem "+indx+
                                 " does not appear to be built.");
                     }
                 }
@@ -148,11 +151,11 @@ public class TestAll {
         for(String key: keys){
             String kval = compdata.get(key);
             if (kval == null) {
-                System.out.println("Bad problem number in checker.txt: "+key);
+                ps.println("Bad problem number in checker.txt: "+key);
             }
         }
     }
     public static void main(String[] args) {
-        findAllProbs();
+        findAllProbs(System.out);
     }
 }
