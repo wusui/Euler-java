@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import eulermath.LongModPower;
 import infrastruct.EulerProb;
 import infrastruct.Etimer;
+import infrastruct.ErrorMesg;
 
 import problem.Problem0;
 
@@ -46,7 +47,7 @@ public class TestAll {
         return classv;
     }
     /**
-     * Set error message in new EulerProb object.
+     * Set exception error message in new EulerProb object.
      *
      * @param error Error message
      * @return EulerProb with error message set
@@ -71,6 +72,7 @@ public class TestAll {
      * @param ps PrintStream to use.
      */
     public static void findAllProbs(PrintStream ps) {
+        ErrorMesg eMsgO = new ErrorMesg(ps);
         LongModPower lmp = new LongModPower();
         long timeLimit = lmp.raise(10L,9L) * 60L;
         File localFile = new File(".");
@@ -78,7 +80,6 @@ public class TestAll {
         boolean inlocaldir = false;
         for (int i=0; i<lfiles.length; i++) {
             if (lfiles[i].toString().endsWith("problem")) {
-                ps.println(lfiles[i].toString());
                 inlocaldir = true;
                 break;
             }
@@ -102,7 +103,7 @@ public class TestAll {
             br.close();
         }
         catch (Exception e) {
-            ps.println("Unable to read checker.txt");
+            eMsgO.error("B:Unable to read %s", "checker.txt");
         }
         for (int i=0; i<probs.length; i++) {
             String abspathname = probs[i].getAbsolutePath();
@@ -123,26 +124,30 @@ public class TestAll {
                     Etimer.do_function(problem);
                     String emsg = problem.getError();
                     if (emsg != null) {
-                        ps.println(emsg+" in "+indx);
+                        String locstr = String.format("C:%s occured in %s",
+                                emsg, "%s");
+                        eMsgO.error(locstr, indx);
                     }
                     if (Etimer.exectime > timeLimit) {
-                        ps.println(indx+" took too long to execute");
+                        eMsgO.error(indx+"M:%s took too long to execute",
+                                indx);
                     }
                     String svdans = indata.get(indx);
                     if (svdans == null) {
-                        ps.println("checker.txt does not test "+indx);
+                        eMsgO.error("B:checker.txt does not test %s", indx);
                     }
                     else {
                         if (! svdans.equals(Etimer.answer)) {
-                            ps.println("Math error in problem "+indx);
+                            eMsgO.error("M:Math error in problem", indx);
                         }
                     }
                     if (Etimer.answer != null) {
                         compdata.put(indx, Etimer.answer);
                     }
                     else {
-                        ps.println("Problem "+indx+
-                                " does not appear to be built.");
+                        eMsgO.error(
+                                "B:Problem %s does not appear to be built.",
+                                indx);
                     }
                 }
             }
@@ -151,7 +156,7 @@ public class TestAll {
         for(String key: keys){
             String kval = compdata.get(key);
             if (kval == null) {
-                ps.println("Bad problem number in checker.txt: "+key);
+                eMsgO.error("B:Bad problem number in checker.txt %s", key);
             }
         }
     }
