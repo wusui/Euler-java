@@ -138,7 +138,7 @@ public class TestAll {
                     }
                     else {
                         if (! svdans.equals(Etimer.answer)) {
-                            eMsgO.error("M:Math error in problem", indx);
+                            eMsgO.error("M:Math error in problem %s", indx);
                         }
                     }
                     if (Etimer.answer != null) {
