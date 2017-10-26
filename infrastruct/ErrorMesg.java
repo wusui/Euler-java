@@ -23,7 +23,7 @@ public class ErrorMesg {
     public ErrorMesg(PrintStream ps) {
         this_ps = ps;
         sideMarks = new Hashtable<String,String>();
-        if (System.getProperty("os.name") == "Linux") {
+        if ("Linux".compareTo(System.getProperty("os.name")) == 0) {
             sideMarks.put("M", String.format("%s%s%s", ANSI_RED, "%s",
                     ANSI_RESET));
             sideMarks.put("C", String.format("%s%s%s", ANSI_PURP, "%s",
