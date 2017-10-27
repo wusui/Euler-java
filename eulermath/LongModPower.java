@@ -8,7 +8,6 @@ package eulermath;
  * slow.
  *
  * @author Warren Usui
- * @version 1.0
  *
  */
 public class LongModPower {

@@ -20,7 +20,6 @@ import eulermath.LongModPower;
  * </ul><p>
  *
  * @author Warren Usui
- * @version 1.0
  */
 public class Sieve {
     private final static int[] pindex = new int[]

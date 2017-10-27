@@ -6,7 +6,6 @@ package infrastruct;
  * corresponding to the problem number in the name of the class.
  *
  * @author Warren Usui
- * @version 1.0
  */
 public interface EulerProb {
     public String getError();

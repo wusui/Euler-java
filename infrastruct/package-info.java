@@ -7,6 +7,5 @@
  * Provides a way of testing all modules in the problem package.
  * <p>
  * @author Warren Usui
- * @version 1.0
  */
 package infrastruct;

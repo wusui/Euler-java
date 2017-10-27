@@ -3,9 +3,11 @@ package problem;
 import infrastruct.Etimer;
 import infrastruct.EulerProb;
 
-import eulermath.LongModPower; 
+import eulermath.LongModPower;
+import eulermath.Functions;
 
 /**
+ *
  * Double pandigital number divisible by 11
  *
  * @author Warren Usui
@@ -33,10 +35,7 @@ public class Problem491 extends Problem0 implements EulerProb {
      * @return solution to problem 491
      */
     public String problem() {
-        long tenfact = 1L;
-        for (int i=2; i<=10; i++) {
-            tenfact *= i;
-        }
+        long tenfact = Functions.factorial(10);
         long answer = 0L;
         for (int i=0; i<longmodobj.raise(3L, 10L); i++) {
             int isum = 0;

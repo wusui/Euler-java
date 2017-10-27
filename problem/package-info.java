@@ -9,6 +9,5 @@
  * this class to Etimer.run_function.
  * 
  * @author Warren Usui
- * @version 1.0
  */
 package problem;

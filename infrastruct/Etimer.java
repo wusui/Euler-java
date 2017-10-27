@@ -6,7 +6,6 @@ import eulermath.LongModPower;
  * Measure the elapsed time that a problem takes.
  *
  * @author Warren Usui
- * @version 1.0
  */
 public class Etimer {
     /**
