@@ -22,7 +22,11 @@ public class Problem156 extends Problem0 implements EulerProb {
         }
         return ans;
     }
-    
+
+    private class NumbData {
+        NumbData() {
+        }
+    }
     private long problem156_inner(int i) {
         return 0L;
     }

@@ -29,7 +29,9 @@ public class Functions {
      * @param choose number of elements being chosen
      * @return n!/((n-d)!d!)
      */
-    public static BigInteger combo(BigInteger all, BigInteger choose) {
+    public static BigInteger combo(long iall, long ichoose) {
+        BigInteger choose = BigInteger.valueOf(ichoose);
+        BigInteger all = BigInteger.valueOf(iall);
         if (choose.compareTo(BigInteger.ZERO) == 0) {
             return BigInteger.ONE;
         }
