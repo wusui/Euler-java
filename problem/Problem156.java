@@ -3,8 +3,24 @@ package problem;
 import infrastruct.Etimer;
 import infrastruct.EulerProb;
 
+import eulermath.LongModPower;
+
+/**
+ * Counting Digits
+ *
+ * @author Warren Usui
+ * @see <a href="https://projecteuler.net/problem=156/">Problem 156</a>
+ *
+ */
 public class Problem156 extends Problem0 implements EulerProb {
-    long checkout(long numbr, long digit) {
+    /**
+     * Solve f(n,d) as defined in the problem definition
+     *
+     * @param numbr number within the counting range.
+     * @param digit digit from 1 to 9.
+     * @return number of times this digit appears in all previous numbers.
+     */
+    long checkout(long numbr, int digit) {
         long dval = 1L;
         long ans = 0L;
         while (dval <= numbr) {
@@ -19,158 +35,55 @@ public class Problem156 extends Problem0 implements EulerProb {
             if (odigit == digit) {
                 ans += rgtnumb + 1;
             }
+            dval = nval;
         }
         return ans;
     }
-
-    private class NumbData {
-        NumbData() {
-        }
-    }
-    private long problem156_inner(int i) {
-        return 0L;
-    }
-    public String problem156() {
-        long answer = 0;
+    /**
+     * Loop for all digits (1 through 9)
+     */
+    public String problem() {
+        long answer = 0L;
+        Problem156 pobj = new Problem156();
+        LongModPower longmodobj = new LongModPower();
         for (int i=1; i < 10; i++) {
-            answer += problem156_inner(i);
+            answer += pobj.recurs(1L, longmodobj.raise(10L, 14L), i, pobj);
         }
         return Long.toString(answer);
+    }
+    /**
+     * Use a binary search to eliminate contiguous sets of values that do
+     * not work.  Recursively call this search on the smaller parts.
+     *
+     * @param lower lowest number in the range we are searching
+     * @param upper highest number in the range we are searching
+     * @param digit digit from 1 to 9.
+     * @param p this object
+     * @return sum of all values where f(n,d) = n.
+     */
+    public long recurs(long lower, long upper, int digit, Problem156 p) {
+        long retv = 0L;
+        if ((upper - lower) < 100L) {
+            for (long i=lower; i<=upper; i++) {
+                if (p.checkout(i, digit) == i) {
+                    retv += i;
+                }
+            }
+            return retv;
+        }
+        long midpt = (lower + upper) / 2L;
+        long npt = p.checkout(midpt, digit);
+        if (npt > midpt) {
+            retv += recurs(npt+1, upper, digit, p);
+            retv += recurs(lower, midpt, digit, p);
+        }
+        else {
+            retv += recurs(midpt+1, upper, digit, p);
+            retv += recurs(lower, npt, digit, p);
+        }
+        return retv;
     }
     public static void main(String[] args) {
         Etimer.run_function(new Problem156());
     }
 }
-/*
-class NumbData(object):
-    """
-    Object for storing information while extracting a solution for parameter d.
-    """
-    def __init__(self, value):
-        self.value = value
-        self.upper = value * (10**10)
-        self.lower = 0
-        self.solution = []
-        self.checked = []
-
-    def solve(self, lower, upper):
-        """
-        Binary search between two bounds.  Returns a new set of bounds
-        where all points between those numbers are not solutions.  Endpoint
-        values can be checked later.
-        """
-        mid = (lower + upper) / 2
-        prev = 0
-        mpt = mid
-        while prev != mpt:
-            prev = mpt
-            mpt = checkout(prev, self.value)
-            if mpt > self.upper:
-                return [mid, self.upper]
-        if mpt > mid:
-            return [mid, mpt]
-        return [mpt, mid]
-
-    def notdone(self):
-        """
-        Returns False only when there is one entry left in self.checked that
-        indicates the range of all possible answers has been checked.
-        """
-        if len(self.checked) != 1:
-            return True
-        if self.checked[0][0] != 0:
-            return True
-        if self.checked[0][1] != self.upper:
-            return True
-        return False
-
-
-def problem156_inner(iparm):
-    """
-    Main loop for this problem.
-
-    NumbData.checked is used to hold regions of the number line that have
-    been tested.  NumbData.solution holds points found along the way.  In
-    general, we find gaps between NumbData.checked fields and try solving
-    for those, terminating when the entire range of possible solutions has
-    been verified.
-    """
-    nrep = NumbData(iparm)
-    minv = 0
-    maxv = nrep.upper
-    nrange = []
-
-    def do_search():
-        """
-        search for a number that matches it's position
-        """
-        nadded = False
-        for i in range(0, len(nrep.checked)):
-            if nrange[0] <= nrep.checked[i][0]:
-                if nrange[1] >= nrep.checked[i][1]:
-                    nrep.checked[i] = nrange
-                    nadded = True
-                    break
-                elif nrange[1] >= nrep.checked[i][0]:
-                    nrep.checked[i][0] = nrange[0]
-                    nadded = True
-            else:
-                if nrange[0] <= nrep.checked[i][1] and \
-                        nrange[1] >= nrep.checked[i][1]:
-                    nrep.checked[i][1] = nrange[1]
-                    nadded = True
-        return nadded
-
-    def found_match():
-        """
-        Update nrep if matching values are found
-        """
-        skip = False
-        for i in range(0, len(cpy)):
-            if skip:
-                skip = False
-                continue
-            if i+1 < len(cpy) and cpy[i][1] >= cpy[i+1][0]-1:
-                cpy[i][1] = cpy[i+1][1]
-                skip = True
-            nrep.checked.append(cpy[i])
-
-    def none_continue():
-        """
-        Update nrep if no matching values are found
-        """
-        last = -1
-        for i in range(0, len(cpy)):
-            if nrange[0] > last and nrange[1] < cpy[i][0]:
-                nrep.checked.append(nrange)
-            nrep.checked.append(cpy[i])
-            last = cpy[i][1]
-        if nrange[0] > last:
-            nrep.checked.append(nrange)
-
-    while nrep.notdone():
-        nrange = nrep.solve(minv, maxv)
-        for i in range(0, 2):
-            if checkout(nrange[i], iparm) == nrange[i]:
-                nrep.solution.append(nrange[i])
-        if not nrep.checked:
-            nrep.checked = [nrange]
-        else:
-            added = do_search()
-            cpy = nrep.checked[:]
-            nrep.checked = []
-            if added:
-                found_match()
-            else:
-                none_continue()
-            if nrep.checked[0][0] > 0:
-                minv = 0
-                maxv = nrep.checked[0][0]
-            else:
-                minv = nrep.checked[0][1]
-                if len(nrep.checked) > 1:
-                    maxv = nrep.checked[1][0]
-                else:
-                    maxv = nrep.upper
-    return sum(set(nrep.solution))
-*/
