@@ -227,4 +227,19 @@ public class Sieve {
         }
         return retv;
     }
+    /**
+     *
+     * Return an array of primes less than a number
+     *
+     * @param number  maximum prime value
+     * @return list of primes less than number
+     */
+    public int[] get_prime_list(int number) {
+        int n2 = number / 2;
+        int[] retval = new int[n2];
+        for (int i=0; i < n2; i++) {
+            retval[i] = get_next();
+        }
+        return retval;
+    }
 }
